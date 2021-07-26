@@ -1,0 +1,219 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title":"SOLID Users Documentation",
+      "description": "This is an educational API", 
+      "version": "1.0.0",
+      "contact": {
+        "email": "pedrolcr@outlook.com"
+      }
+    },
+    "paths": {
+      "/users": {
+        "post": {
+          "tags": ["Users"],
+          "summary": "Create a user",
+          "description": "Create a new user",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/user"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Created",
+              "content": {
+                "application/json": {
+                    "$ref":"#/definitions/user"
+                }
+             }
+            },
+            "400": {
+              "description": "Invalid user_id",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties":{
+                      "error": {
+                        "type": "string"
+                      } 
+                    },
+                    "example": {
+                      "error": "User already exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": ["Users"],
+          "summary": "List all users",
+          "description": "List all users",
+          "parameters":[
+            {
+              "name":"user_id",
+              "in": "header",
+              "description": "Id of a valid administrator user",
+              "required": true,
+              "schema": {
+                "type":"string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/user"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Users is not a admin or does not exists",
+              "content": {
+                "application/json": {
+                    "schema": {
+                    "type": "object",
+                    "properties":{
+                        "error": {
+                          "type": "string"                          
+                        } 
+                    },
+                    "example": {
+                        "error": "Admin user does not exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{user_id}":{
+        "get":{
+          "tags":["Users"],
+          "summary": "Get user profile",
+          "description": "Get a user profile by id",
+          "parameters":[
+            {
+              "name":"user_id",
+              "in": "path",
+              "description": "Id of a valid user",
+              "required": true,
+              "schema": {
+                "type":"string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/definitions/user"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Invalid user_id",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties":{
+                      "error": {
+                        "type": "string"
+                      } 
+                    },
+                    "example":{
+                      "error": "User does not exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{user_id}/admin":{
+        "patch":{
+          "tags":["Users"],
+          "summary": "Set a user admin",
+          "description": "Turn a user into a admin",
+          "parameters":[
+            {
+              "name":"user_id",
+              "in": "path",
+              "description": "Id of a valid user",
+              "required": true,
+              "schema": {
+                "type":"string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                      "$ref": "#/definitions/user"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Invalid user_id",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties":{
+                      "error": {
+                        "type": "string"
+                      } 
+                    },
+                    "example":{
+                      "error": "User does not exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email":{
+            "type": "string"
+          }
+        },
+        "example":{
+          "name": "Pedro Luis", 
+          "description": "pedro.luis@teste.com"
+        }
+      }
+    }
+  }
