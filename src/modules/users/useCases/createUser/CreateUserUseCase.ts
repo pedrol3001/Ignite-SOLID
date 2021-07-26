@@ -12,7 +12,7 @@ class CreateUserUseCase {
   execute({ email, name }: IRequest): User {
     
     if(this.usersRepository.findByEmail(email)){
-      throw new Error("Mensagem do erro");
+      throw new Error("User already exists");
     }
     return this.usersRepository.create({name, email});
   }
